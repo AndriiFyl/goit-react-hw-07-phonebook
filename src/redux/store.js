@@ -4,7 +4,7 @@ import { filterReducer } from './filterSlice';
  
 
 const rootReducer = combineReducers({
-  constacts: contactsReducer,
+  contacts: contactsReducer,
   filter: filterReducer,
 });
 
@@ -13,6 +13,20 @@ export const store = configureStore({
 });
 
 
+
+
+
+
+
+
+// export const store = configureStore({
+//   reducer: {
+//   contacts: contactsReducer,
+//   filter: filterReducer,
+//   }
+// });
+
+ 
 
 
 

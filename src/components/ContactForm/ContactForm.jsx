@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import css from './ContactForm.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { addContact, getContacts } from 'redux/contactsSlice';
+import { getContacts } from 'redux/contactsSlice';
+import { addContact } from 'redux/operations';
 
 export default function ContactForm() {
   const [name, setName] = useState('');
@@ -34,14 +35,14 @@ export default function ContactForm() {
 
   const handleSubmit = event => {
     event.preventDefault();
-    const repeatingName = contactsList.contacts.find(
+    const repeatingName = contactsList.find(
       contact => contact.name.toLowerCase() === name.toLowerCase()
     );
     if (repeatingName) {
       alert(`${name} is already in contacts.`);
       return;
     } else {
-      dispatch(addContact(name, number));
+      dispatch(addContact({ name, number }));
     }
     resetInputsForm();
   };

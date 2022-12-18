@@ -12,8 +12,6 @@ const ContactsList = () => {
   const dispatch = useDispatch();
   const isLoading = useSelector(getIsLoading);
 
-  console.log(contactsList);
-
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
@@ -25,7 +23,7 @@ const ContactsList = () => {
   const getVisibleContacts = () => {
     const normilizedFilter = filterAllContacts.filter.toLowerCase();
 
-    return contactsList.contacts.filter(contact =>
+    return contactsList.filter(contact =>
       contact.name.toLowerCase().includes(normilizedFilter)
     );
   };
@@ -39,10 +37,10 @@ const ContactsList = () => {
       ) : (
         <ul className={css.list__container}>
           {/* Деструктуризируем contacts -> id, name */}
-          {visibleContacts.map(({ id, name, phone }) => (
+          {visibleContacts.map(({ id, name, number }) => (
             <li className={css.item} key={id}>
               <p className={css.name}>{name}</p>
-              <p className={css.number}>{phone}</p>
+              <p className={css.number}>{number}</p>
               <button
                 className={css.btn__delete}
                 type="button"

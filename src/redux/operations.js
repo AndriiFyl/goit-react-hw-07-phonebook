@@ -15,3 +15,13 @@ export const fetchContacts = createAsyncThunk(
       return response.data;
   }
 )
+
+// операція для додавання контактів
+export const addContact = createAsyncThunk(
+  'contacts/addContact',
+  
+  async (contact) => {
+      const response = await axios.post(`contacts`, contact);
+      return response.data;
+  }
+)
