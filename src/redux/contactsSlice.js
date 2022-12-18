@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchContacts, addContact } from "./operations";
+import { fetchContacts, addContact, deleteContact } from "./operations";
 
 const contactsInitialState = {
     items: [],
@@ -30,52 +30,39 @@ export const contactsSlice = createSlice({
     
         
         
-       //    коли наш запит в стадії прогресу, змінюємо в стейт властивість isLoading на true
        builder.addCase(addContact.pending, state => {
            state.isLoading = true;
        });
        builder.addCase(addContact.fulfilled, (state, action) => {
            state.items.push(action.payload);
-        //    після того як виконався успішний запит, знову змінюємо значення isLoading в state
-           state.isLoading = false;
+          state.isLoading = false;
        });
        builder.addCase(addContact.rejected, (state, action) => {
            state.error = action.payload;
-        //    записуємо до стейту isLoading = false, щоб коли сторінка крашнулась - у нас не висів Loading... 
+    
            state.isLoading = false;
        });
+        
+        
+        
+       builder.addCase(deleteContact.pending, state => {
+           state.isLoading = true;
+       });
+       builder.addCase(deleteContact.fulfilled, (state, action) => {
+        const index = state.items.findIndex(
+        contact => contact.id === action.payload);
+        state.items.splice(index, 1);
+        state.isLoading = false;
+       });
+       builder.addCase(deleteContact.rejected, (state, action) => {
+           state.error = action.payload;
+           state.isLoading = false;
+       });  
   },
-
-            reducers:{
-        // addContact: {
-        //     reducer(state, action) {
-        //         // state.contacts = [...state.contacts, action.payload]
-        //         state.contacts.push(action.payload);
-        //     },
-        //     prepare(name, phone) {
-        //         return {
-        //             payload: {
-        //                 id: nanoid(),
-        //                 name,
-        //                 phone,
-        //             },
-        //         };
-        //     },
-        // },
-     deleteContact(state, action) {
-        state.contacts = state.contacts.filter(
-        contact => contact.id !== action.payload);
-    //      const index = state.contacts.findIndex(
-    //     contact => contact.id === action.payload
-    //   );
-    //   state.contacts.splice(index, 1);
-        }
-    }
 });
 
 
 export const  contactsReducer  =  contactsSlice.reducer;
-export const { deleteContact } = contactsSlice.actions;
 // Selector for contacts
 export const getContacts = state => state.contacts.items;
 // Selector for status of loading

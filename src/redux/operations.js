@@ -25,3 +25,13 @@ export const addContact = createAsyncThunk(
       return response.data;
   }
 )
+
+// операція видалення контактів
+export const deleteContact = createAsyncThunk(
+  'contacts/deletecontact',
+  
+  async (id) => {
+      await axios.delete(`contacts/${id}`);
+      return id;
+  }
+)

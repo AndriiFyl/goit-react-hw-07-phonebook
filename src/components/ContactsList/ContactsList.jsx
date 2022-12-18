@@ -1,10 +1,10 @@
 import React from 'react';
 import css from './ContactsList.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteContact, getContacts, getIsLoading } from 'redux/contactsSlice';
+import { getContacts, getIsLoading } from 'redux/contactsSlice';
 import { getFilter } from 'redux/filterSlice';
 import { useEffect } from 'react';
-import { fetchContacts } from 'redux/operations';
+import { fetchContacts, deleteContact } from 'redux/operations';
 
 const ContactsList = () => {
   const contactsList = useSelector(getContacts);
