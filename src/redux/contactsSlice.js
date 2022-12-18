@@ -1,22 +1,41 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { nanoid } from 'nanoid';
-import { persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+import { fetchContacts } from "./operations";
 
 const contactsInitialState = {
-    contacts: []
+    contacts: {
+    items: [],
+    isLoading: false,
+    error: null
+  }
 }
+
 
 const contactsSlice = createSlice({
     name: "contacts",
     initialState: contactsInitialState,
-   
+    // в екстраред'юсер передаємо колбек-функцію, що приймає builder, який в свою чергу додає кейси для обробки
+    // всіх запитів: pending, fulfilled та rejected
+    extraReducers: builder => {
+       //    коли наш запит в стадії прогресу, змінюємо в стейт властивість isLoading на true
+       builder.addCase(fetchContacts.pending, state => {
+           state.contacts.isLoading = true;
+       });
+       builder.addCase(fetchContacts.fulfilled, (state, action) => {
+           state.contacts.items.push(...action.payload);
+        //    після того як виконався успішний запит, знову змінюємо значення isLoading в state
+           state.contacts.isLoading = false;
+       });
+       builder.addCase(fetchContacts.rejected, (state, action) => {
+           state.contacts.error = action.payload;
+       });
+  },
 
     reducers: {
         addContact: {
             reducer(state, action) {
-                state.contacts = [...state.contacts, action.payload]
-                // state.contacts.push(action.payload);
+                // state.contacts = [...state.contacts, action.payload]
+                state.contacts.push(action.payload);
             },
             prepare(name, phone) {
                 return {
@@ -39,19 +58,13 @@ const contactsSlice = createSlice({
     }
 });
 
-// // Робимо persist для даного slice
-// // конфігурація persist
-const persistConfig = {
-  key: 'root',
-  storage,
-}
 
-//1 persistedContactsReducer - редюсер, який напряму тепер пов'язаний з localStorage
-//  (як параметри приймає persistConfig - всі дані зі storage та редюсер)
-export const persistedContactsReducer = persistReducer(persistConfig, contactsSlice.reducer);
+export const  contactsReducer  =  contactsSlice.reducer;
 export const { addContact, deleteContact } = contactsSlice.actions;
-// Selector
-export const getContacts = state => state.contacts;
+// Selector for contacts
+export const getContacts = state => state.contacts.items;
+// Selector for status of loading
+export const getIsLoading = state => state.contacts.isLoading;
 
 
 
