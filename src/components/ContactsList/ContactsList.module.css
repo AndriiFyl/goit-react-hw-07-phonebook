@@ -1,0 +1,39 @@
+.list__container {
+    min-width: 350px;
+    display: flex;
+    flex-direction: column; 
+    
+}
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;   
+    border-bottom: 1px solid rgb(211, 206, 206);
+}
+
+.name {
+    color: rgb(75, 68, 68);
+    display: flex;
+    min-width: 120px;
+    max-width: 130px;
+}
+
+.number {
+    font-weight: 500; 
+}
+
+.btn__delete {
+    cursor: pointer;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    width: 60px;
+    background-color: beige;
+    border-radius: 3px;
+    border-color: blanchedalmond;
+}
+
+.btn__delete:hover {
+    background-color: rgb(238, 238, 182);
+}
