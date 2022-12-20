@@ -24,7 +24,7 @@
     font-weight: 500; 
 }
 
-.btn__delete {
+.btn {
     cursor: pointer;
     padding-top: 2px;
     padding-bottom: 2px;
@@ -32,8 +32,14 @@
     background-color: beige;
     border-radius: 3px;
     border-color: blanchedalmond;
+    margin-left: 2px;
+    margin-right: 2px;
 }
 
-.btn__delete:hover {
+.btn:hover {
     background-color: rgb(238, 238, 182);
+}
+
+.buttons__wrapper {
+    display: flex;
 }

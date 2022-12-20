@@ -10,9 +10,13 @@ axios.defaults.baseURL = 'https://639ed80e7aaf11ceb88c3361.mockapi.io/';
 export const fetchContacts = createAsyncThunk(
   'contacts/fetchContacts',
   
-  async () => {
+  async (_, thunkAPI) => {
+    try {
       const response = await axios.get(`contacts`);
       return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
 )
 
@@ -20,9 +24,13 @@ export const fetchContacts = createAsyncThunk(
 export const addContact = createAsyncThunk(
   'contacts/addContact',
   
-  async (contact) => {
+  async (contact, thunkAPI) => {
+    try {
       const response = await axios.post(`contacts`, contact);
       return response.data;
+    } catch (error) {
+       return thunkAPI.rejectWithValue(error.message)
+    }    
   }
 )
 
@@ -30,8 +38,28 @@ export const addContact = createAsyncThunk(
 export const deleteContact = createAsyncThunk(
   'contacts/deletecontact',
   
-  async (id) => {
-      await axios.delete(`contacts/${id}`);
-      return id;
+  async (id, thunkAPI) => {
+    try {
+      // в response повертаємо id з бекенду - для видалення контакту
+     const response =  await axios.delete(`contacts/${id}`);
+      return response.data.id;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message)
+    } 
+  }
+)
+
+// операція зміни(оновлення) імені/номеру 
+export const editContact = createAsyncThunk(
+  'contacts/editContact',
+  
+  async (contact, thunkAPI) => {
+    try {
+    
+     const response =  await axios.put(`contacts/${contact.id}`, contact);
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error)
+    } 
   }
 )
